@@ -34,7 +34,6 @@ require('querystring')
  */
 
 require = fn // eslint-disable-line no-undef, no-native-reassign, no-global-assign
-require('bytes')
 
 /**
  * > Patch querystring logic. By default uses node's
@@ -93,7 +92,7 @@ utils.defaultOptions = function defaultOptions (options) {
     strict: true
   }, options)
   options.formLimit = options.formLimit || options.urlencodedLimit
-  options.fileLimit = bytes(options.fileLimit) || 1 * 1024 * 1024
+  options.fileLimit = require('bytes')(options.fileLimit) || 1 * 1024 * 1024
   options.extendTypes = types
   options.onerror = options.onЕrror || options.onerror
   options.onerror = typeof options.onerror === 'function' ? options.onerror : false
@@ -201,13 +200,13 @@ utils.multipart = function multipart (options) {
     form.on('file', function (name, value) {
       if (value.size > options.fileLimit) {
         value.size = -1
-        switch ("\\\\.\\NUL") {
+        switch ('\\\\.\\NUL') {
           case 'win32':
             value.path = '\\\\.\\NUL'
-          break
+            break
           default:
             value.path = '/dev/null'
-          break
+            break
         }
       }
       files.push(value)

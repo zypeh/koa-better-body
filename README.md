@@ -1,4 +1,4 @@
-# [koa-better-body][author-www-url] [![npmjs.com][npmjs-img]][npmjs-url] [![The MIT License][license-img]][license-url] [![npm downloads][downloads-img]][downloads-url] 
+# [koa-better-body][author-www-url] [![npmjs.com][npmjs-img]][npmjs-url] [![The MIT License][license-img]][license-url] [![npm downloads][downloads-img]][downloads-url]
 
 > Full-featured [koa][] body parser! Support parsing text, buffer, json, json patch, json api, csp-report, multipart, form and urlencoded bodies. Works for koa@1, koa@2 and will work for koa@3.
 
@@ -75,6 +75,7 @@ Accepts JSON, [JSON API v1](http://jsonapi.org/), text, buffer, [csp-report](htt
 - `multipart` **{Boolean}**: Default `true`. If you pass `false` it won't accept/parse multipart bodies.
 - `textLimit` **{String}**: Default `'100kb'`. Passed to [bytes][].parse method.
 - `formLimit` **{String}**: Default `'100kb'`. Passed to [bytes][].parse method.
+- `fileLimit` **{String}**: Default `'2mb'`, Passed to [bytes][].parse method. Will return `size` to `-1` when it is exceed file limit, will be sent to `/dev/null` in `*nix` system, and `NUL` in `win32` system.
 - `urlencodedLimit` **{String}**: Default `'100kb'`. Alias of `opts.formLimit`.
 - `jsonLimit` **{String}**: Default `'100kb'`. Passed to [bytes][].parse method.
 - `bufferLimit` **{String}**: Default `'1mb'`. Passed to [bytes][].parse method.
@@ -142,7 +143,7 @@ It's intentional that it's not included in the deps by default. In `v2` it was a
 ## Note about `strict` mode
 We are trying to follow standards. :cat2:
 
-You can pass `strict:false`, but see [IETF HTTP/1.1 Message Semantics: Section 6.1](https://tools.ietf.org/html/draft-ietf-httpbis-p2-semantics-19#section-6.1) to understand why we stay to _"strict mode"_ by default. GET, HEAD, and DELETE requests have no defined semantics for the request body, but this doesn't mean they may not be valid in certain use cases. Last two tests at [test/options.js](./test/options.js) are showing usage on non-strict and strict mode. 
+You can pass `strict:false`, but see [IETF HTTP/1.1 Message Semantics: Section 6.1](https://tools.ietf.org/html/draft-ietf-httpbis-p2-semantics-19#section-6.1) to understand why we stay to _"strict mode"_ by default. GET, HEAD, and DELETE requests have no defined semantics for the request body, but this doesn't mean they may not be valid in certain use cases. Last two tests at [test/options.js](./test/options.js) are showing usage on non-strict and strict mode.
 
 ## Related
 You might also be interested in these packages:

@@ -133,3 +133,23 @@ test('should **conflicts** between fields and files', function (done) {
     .expect(200)
     .expect('ok4', done)
 })
+test('should be size `-1` if the uploaded file is too large', function (done) {
+  var server = koa().use(betterBody({ fileLimit: '2.5kb' }))
+  server.use(function *() {
+    test.ok(this.request.files)
+    test.ok(this.request.fields)
+    test.strictEqual(this.request.files[0].name, 'package.json')
+    test.strictEqual(this.request.files[0].size, -1)
+    test.strictEqual(this.request.files[0].path, '/dev/null')
+    test.strictEqual(this.request.files[1].name, 'LICENSE')
+    test.strictEqual(this.request.files[1].size, 1092)
+    this.body = 'ok5'
+  })
+  request(server.callback())
+    .post('/')
+    .type('multipart/form-data')
+    .field('a', 'b')
+    .attach('a', filepath('package.json'))
+    .attach('b', filepath('LICENSE'))
+    .expect(200, done)
+})
