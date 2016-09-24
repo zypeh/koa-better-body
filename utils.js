@@ -83,6 +83,7 @@ utils.defaultOptions = function defaultOptions (options) {
     multipart: true,
     textLimit: false,
     formLimit: false,
+    fileLimit: false,
     jsonLimit: false,
     jsonStrict: true,
     detectJSON: false,
@@ -91,6 +92,7 @@ utils.defaultOptions = function defaultOptions (options) {
     strict: true
   }, options)
   options.formLimit = options.formLimit || options.urlencodedLimit
+  options.fileLimit = options.fileLimit ? options.fileLimit : 1 * 1024 * 1024
   options.extendTypes = types
   options.onerror = options.onЕrror || options.onerror
   options.onerror = typeof options.onerror === 'function' ? options.onerror : false
@@ -196,6 +198,9 @@ utils.multipart = function multipart (options) {
     form.on('error', done)
     form.on('aborted', done)
     form.on('file', function (name, value) {
+      if (value.size > options.fileLimit) {
+        value.size = -1
+      }
       files.push(value)
       fields[name] = fields[name] || []
       fields[name].push(value)
